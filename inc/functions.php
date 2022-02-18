@@ -47,9 +47,31 @@ function getCategoryName($id, $conn){
 	}
 }
 
-/*******************
+/***********************
 Customers
-********************/
+***********************/
+
+function getCustomerNameById($id, $conn){
+	$sql = "SELECT * from customers WHERE id={$id}";
+	
+	$result = $conn->query($sql);
+	if($result){
+		
+		if($result->num_rows > 0){
+			
+			$row = $result->fetch_assoc();
+			$data = $row["name"];
+			
+			return $data;		
+		}else{			
+			return false;
+		}
+	}else{
+		echo $conn->error;		
+		return false;
+	}
+}
+
 
 
 
@@ -108,6 +130,27 @@ function getTownships($conn){
 /*******************
 Subscription
 ********************/
+
+function getSubscriptions($conn){
+	$sql = "SELECT s.start_date, s.end_date, s.meal_number, s.add_rice, s.note, s.subscription_total, c.name from subscriptions AS s, customers AS c WHERE s.customer_id=c.id";
+	
+	$result = $conn->query($sql);
+	if($result){
+		$data = array();
+		if($result->num_rows > 0){
+			
+			While($row = $result->fetch_assoc()){
+				 array_push($data, $row);
+			}
+			return $data;		
+		}else{			
+			return false;
+		}
+	}else{
+		echo $conn->error;		
+		return false;
+	}
+}
 
 
 function getSubscriptionByUserId($user_id, $conn){
